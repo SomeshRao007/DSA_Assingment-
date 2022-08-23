@@ -24,7 +24,7 @@ print("Sorted :",Arr)
 
 
 ################################################################
-#other way to do
+#Another way to do
 # for i in range(0,len(Arr)-1):
 #     for j in reversed(range (i+1, i>0)):
 #         if Arr[j]< Arr[j-1] :
