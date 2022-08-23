@@ -25,10 +25,10 @@ def merge(Arr, p, q, r):
             j += 1
 
 
-Arr = [5, 9, 1, 2, 4, 8, 6, 3, 7]
-print(Arr)
+Arr = [12, 11, 13, 5, 6, 7]
+print("Given array is: ",Arr)
 merge_sort(Arr)
-print(Arr)
+print("Sorted array is: ", Arr)
 
 
 
