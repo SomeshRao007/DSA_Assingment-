@@ -1,0 +1,59 @@
+import sys
+def Max_crossing_subarray(A, low, mid, high):
+
+    left_sum = 0 - sys.maxsize # as a replica of -infinty, I took maximum number availiable and subtracted it with 0 so as to get smallest number.
+    _sum = 0;max_left=mid
+    for i in range(mid, low -1, -1):
+        _sum = _sum + A[i]
+        if _sum > left_sum:
+            left_sum = _sum
+            max_left = i
+
+    right_sum = 0 - sys.maxsize
+    _sum = 0;max_right = mid+1
+    for j in range(mid+1, high ):
+        _sum = _sum + A[j]
+        if _sum > right_sum:
+            right_sum = _sum
+            max_right = j+1
+    return max_left, max_right, left_sum + right_sum
+
+
+def Maximim_subarray(A, low, high):
+
+    if (low == high -1):
+        return (low,high, A[low])
+    else :
+        mid = (low + high) // 2
+        left_low, left_high, left_sum = Maximim_subarray(A, low, mid)
+        right_low, right_high, _right_sum = Maximim_subarray(A, mid , high)
+        cross_low, cross_high, cross_sum = Max_crossing_subarray(A, low, mid, high)
+        if left_sum > _right_sum and left_sum > cross_sum:
+            return left_low, left_high, left_sum
+        if _right_sum > left_sum and _right_sum > cross_sum:
+            return right_low, right_high, _right_sum
+        else:
+            return  cross_sum #,cross_high,cross_low
+
+
+
+    # since we are checking for largest sum from left, right or from sub array that crosses the mid point.
+    # So, instead of running this whole code. Sir, we can make use of max function like the one in below right?
+    #return max(Maximim_subarray(A, low, mid + 1), Maximim_subarray(A, mid + 1, high),Max_crossing_subarray(A, low, mid, high))
+
+
+
+# testing
+
+
+#print(sys.getrecursionlimit())
+# sys.setrecursionlimit(9999)
+
+
+A = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+n = len(A)
+ANS = Maximim_subarray(A, 0, n - 1)
+print("The given array is: ",A)
+print("Max sum is: ",ANS)
+
+
