@@ -14,9 +14,11 @@ def MAX_HEAPIFY(A,n,i):
 
     if l< n and A[i] < A[l]:
         largest = l
+        #print("l",l)
     #else: largest = i
     if r< n and A[largest]<A[r]:
         largest = r
+        #print("r",r)
     if largest != i :
        
         A[i],A[largest] = A[largest],A[i]
@@ -26,6 +28,7 @@ def MAX_HEAPIFY(A,n,i):
 def BUILD_MAX_HEAP (A):
     n = len(A)
     for i in range (n//2 , -1, -1 ):
+        #print(A)
         MAX_HEAPIFY(A,n,i)
 
 def HEAPSORT(A):
@@ -33,7 +36,7 @@ def HEAPSORT(A):
     BUILD_MAX_HEAP(A)
     for i in range (n - 1,0,-1):
         A[i],A[0] = A[0],A[i]
-
+        #print(A)
 
 
         MAX_HEAPIFY(A,i,0)
