@@ -18,7 +18,7 @@ def MAX_HEAPIFY(A,n,i):
     if r< n and A[largest]<A[r]:
         largest = r
     if largest != i :
-        #swap(A[i],A[largest])
+       
         A[i],A[largest] = A[largest],A[i]
 
         MAX_HEAPIFY(A,n,largest)
@@ -44,4 +44,4 @@ print("The original Array is: ", A)
 #n= len(A)
 #ANS=HEAPSORT(A)
 print('The Sorted Array is:   ',HEAPSORT(A))
-# it took me long time to find ou the problem sir i made some changes accordingly. It fun altogether 
+# It took me a while to find ou the problem sir i made some changes accordingly. It fun altogether 
