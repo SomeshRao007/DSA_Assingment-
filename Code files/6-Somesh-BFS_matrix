@@ -1,0 +1,38 @@
+
+class BFS_matrix:
+    adj = []
+
+
+    def __init__(self, a, b):
+
+        self.a = a
+        self.b = b
+        BFS_matrix.adj = [[0 for i in range(a)]
+                          for j in range(a)]
+
+    def addelement(self, start, b):
+        BFS_matrix.adj[start][b] = 1
+        BFS_matrix.adj[b][start] = 1
+        
+        
+    def BFS(self, start):
+        visited = [0] * self.a
+        q = [start]
+        visited[start] = 1
+        while q:
+            vis = q[0]
+            print(vis, "-->", end="")
+            q.pop(0)
+            for i in range(self.a):
+                if BFS_matrix.adj[vis][i] == 1 and (not visited[i]):
+                    q.append(i)
+                    visited[i] = 1
+
+
+a, b = 5, 4
+G = BFS_matrix(a, b)
+G.addelement(0, 1)
+G.addelement(0, 2)
+G.addelement(1, 3)
+
+G.BFS(0)
