@@ -2,8 +2,6 @@
 #why undirected?
 #use example 1
     #0,  1,  2,  3,  4
-import sys
-
 G=[
     [0 , 2 , 2 , 5 , 3],
     [2 , 0 , 1 , 4 , 4],
@@ -15,7 +13,7 @@ G=[
 #put all vertex into the queue
 #for each vertex
 #set key = infinity
-INF = sys.maxsize
+INF = 999
 N = 5
 r = 0
 
@@ -47,6 +45,7 @@ def adj( G, u):
         each = G[index]
         if each[u]!=0: 
             neighbors.append ( index )
+    print(neighbors)
     return neighbors
 
 def v_in_Q(Q,v):
@@ -63,11 +62,11 @@ while(Q):
     u = Q.popitem()[0]  #node
     for v in adj(G,u):
     #for v in adj[u]
-        if (v_in_Q(Q,v) and G[u][v] < Q[v]):
-        #if v in Q, and w(u,v)<v.key
-            pi[v] = u + G[u][v]
+        #if (v_in_Q(Q,v) and G[u][v]   < Q[v]):
+        if G[u][v] >0 and v > u + G[u][v]:
+            v = u + G[u][v]
             #v.pi = u
-            Q[v] = G[u][v]
+            #Q[v] = G[u][v]
             #v.key = w(u,v)
 print(pi)
 
