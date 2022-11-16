@@ -7,8 +7,8 @@ class Node(object):
     def get_child(self):
             return self.left,self.right
 
-    def decode (root,s): # where root is encoded mgs and s is frequencies i just wrote it in casual terms
-        temp = root
+    def decode (root,s): # where root is encoded mgs and s is frequencies i just wrote it in casual terms.
+        temp = root # we bacially use tree and go backwards with the help of encoded mgs .
         ans = []
         for char in s :
             if char is '0':
