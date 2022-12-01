@@ -1,0 +1,213 @@
+
+import random
+import copy
+
+
+#board = [[0,0,2,2],[2,2,16,4],[4,8,2,2],[0,0,8,2]]
+
+boardSize = 4 # 4x4 board is our default setup if user wants to set up for more hard game he/she can increse thre od thre board
+user = input(" Enter the player name: ")
+def show():
+    largest = board [0][0] # to find largest no. on board in case we need more space to accommodate
+    for row in board:
+        for element in row:
+            if element > largest:
+                largest = element
+    numSpace = len(str(largest)) # to adjust the spaces required according to the numbers
+    for row in board:
+        currRow = "|"
+        for element in row:
+            if element == 0:
+                currRow += " " * numSpace + "|"
+            else: currRow += (" " * (numSpace - len(str(element)))) + str(element) + "|"
+        print(currRow)
+    print()
+
+#show() #yayayay
+
+
+def MergeOneRowL (row) : # traditinal way to merge tiles
+    for j in range(boardSize - 1):
+        for i in range(boardSize - 1, 0, -1):#move everything to left
+            if row[i - 1] == 0: # check for empty space and move over
+                row[i - 1] = row[i]
+                row[i] = 0
+
+
+    for i in range (boardSize -1 ):
+        if row[i] == row[i+1]:
+            row [i] *= 2
+            row[i + 1] = 0
+    for i in range (boardSize - 1, 0, -1):
+        if row[i - 1] == 0 :
+            row [i - 1] = row[i]
+            row[i] = 0
+    return row
+
+def merge_left(currentBoard):
+    for i in range (boardSize):
+        currentBoard[i] = MergeOneRowL(currentBoard[i])
+    return currentBoard
+
+
+# merge_left(board)
+# show()# yay it works
+
+
+def reverse (row): # insted of writing every funtion i am trying to manage it with reverse and transpose of a matrix .
+    new = []
+    for i in range (boardSize-1 , -1, -1):
+        new.append(row[i])
+    return new
+
+def merge_right(currentBoard):
+    for i in range(boardSize):
+        currentBoard[i] = reverse(currentBoard[i])
+        currentBoard[i] = MergeOneRowL(currentBoard[i])
+        currentBoard[i] = reverse(currentBoard[i])
+        return currentBoard
+
+# merge_right(board)
+# show() #yay it works  now transpose and rest do it tomorrow morning
+
+def transpose(currentBoard):
+    for j in range (boardSize):
+        for i in range (j, boardSize):
+            if not i == j :
+                temp = currentBoard[j][i]
+                currentBoard[j][i] =currentBoard[i][j]
+                currentBoard[i][j] = temp
+    return currentBoard
+
+def merge_up(currentBoard):
+    currentBoard = transpose(currentBoard)
+    currentBoard = merge_left(currentBoard)
+    currentBoard = transpose(currentBoard)
+
+    return currentBoard
+# merge_up(board)
+# show()# thats y we used to transpose ...ease of coding
+#
+
+def merge_down(currentBoard):
+    currentBoard = transpose(currentBoard)
+    currentBoard = merge_right(currentBoard)
+    currentBoard = transpose(currentBoard)
+
+    return currentBoard
+
+# merge_down(board)
+# show()# works cool now random 4 tile generation
+
+
+def pickNewValues():
+    if random.randint(1,8) == 1: # now for every 8 times a 4 number tilte will be generated
+        return 4
+    # if random.randint(1,16) == 1
+    #     return 8
+    else: return 2
+
+def addNewValue ():
+    rowNum = random.randint(0,boardSize-1)
+    colNum= random.randint(0, boardSize-1)
+
+    while not board[rowNum][colNum] == 0:
+        rowNum = random.randint(0,boardSize-1)
+        colNum = random.randint(0,boardSize-1)
+
+    board[rowNum][colNum] = pickNewValues()
+
+def won():
+    for row in board:
+        if 2048 in row:
+            return True
+    return False
+
+def noMoves():
+   tempBoard1 = copy.deepcopy(board)
+   tempBoard2 = copy.deepcopy(board)
+
+
+   tempBoard1= merge_down(tempBoard1)
+   if tempBoard1 == tempBoard2:
+       tempBoard1 = merge_up(tempBoard1)
+       if tempBoard1 == tempBoard2:
+           tempBoard1=merge_left(tempBoard1)
+           if tempBoard1 == tempBoard2:
+               tempBoard1=merge_right(tempBoard1)
+               if tempBoard1 == tempBoard2:
+                   return True
+   return False
+###
+board = []  # declaring a array matrix
+for i in range(boardSize):
+    row = []
+    for j in range(boardSize):
+        row.append(0)
+    board.append(row)
+
+numNeeded = 2 # 2 number mush be there by defalut to start playing the game
+while numNeeded > 0:
+    rowNum = random.randint(0,boardSize - 1)
+    colNum = random.randint(0, boardSize - 1)
+
+    if board[rowNum][colNum] == 0 :
+        board[rowNum][colNum] = pickNewValues()
+        numNeeded -= 1
+
+
+
+print("Welcome "+ user+ " to 2048! an Arcade game with 1990s' aesthetics \n Let me walk you through the instructions : \n To start playing we have merge the board in different directions use W S D A keys. W = up, S = down, D = right, A = left \n Now Let's get started "+ user +"!!!" )
+show()
+
+gameOver = False
+while not gameOver: #user input section
+    move = input("which way do u want to merge?")
+    validInput = True
+
+    tempBoard = copy.deepcopy(board)
+
+    if move == "d":
+        board = merge_right(board)
+    elif move == "w" :
+        board = merge_up(board)
+    elif move == "a" :
+        board = merge_left(board)
+    elif move == "s"  :
+        board = merge_down(board)
+    else: validInput = False
+
+    if not validInput:
+        print("Dude! not Q or E it's WSDA enter correctly ")
+
+    else :
+        if board == tempBoard:
+            print("try to merge different direction ")
+        else:
+            if won():
+                show()
+                print("congratulations" + user + "You won!!")
+                gameOver = True
+            else:
+                addNewValue()
+                show()
+
+            if noMoves():
+                print("You ran out moves.. Better Luck Next Time! "+user)
+                gameOver = True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
