@@ -1,2 +1,2 @@
-# DSA_Assingment-
+# DSA
 all files regarding Datastructures and algorithims assingment 
